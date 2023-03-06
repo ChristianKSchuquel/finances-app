@@ -3,6 +3,7 @@ package main
 import (
 	"finances_manager_go/database"
 	"finances_manager_go/handlers"
+	"finances_manager_go/middlewares"
 	"log"
 	"net/http"
 	"os"
@@ -29,6 +30,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", handlers.IndexHandler)
-	mux.HandleFunc("/add", api.AddIncome)
+	mux.HandleFunc("/add", middlewares.Auth(api.AddIncome))
+	mux.HandleFunc("/signup", api.CreateUser)
 	http.ListenAndServe(":"+port, mux)
 }
